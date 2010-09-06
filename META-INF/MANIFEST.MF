@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EclipseCoder C++ Support
+Bundle-SymbolicName: net.fornwall.eclipsecoder.ccsupport; singleton:=true
+Bundle-Version: 0.2.5
+Bundle-ClassPath: .
+Bundle-Vendor: Fredrik Fornwall
+Export-Package: net.fornwall.eclipsecoder.ccsupport
+Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.3.0,4.0.0)",
+ org.eclipse.ui,
+ org.eclipse.cdt.ui,
+ org.eclipse.cdt.managedbuilder.core,
+ net.fornwall.eclipsecoder,
+ org.eclipse.cdt.core,
+ org.eclipse.cdt.debug.core,
+ org.eclipse.debug.ui,
+ org.eclipse.cdt.debug.ui
+Bundle-Activator: net.fornwall.eclipsecoder.ccsupport.CCSupportPlugin
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

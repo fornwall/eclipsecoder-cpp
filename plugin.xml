@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+	<extension point="net.fornwall.eclipsecoder.languagesupport">
+    	<languagesupport
+    		language="C++"
+    		class="net.fornwall.eclipsecoder.ccsupport.CCLanguageSupport"/>
+	</extension>
+    
+    <extension point="org.eclipse.ui.preferencePages">
+        <page
+              class="net.fornwall.eclipsecoder.ccsupport.CCPreferencesPage"
+              id="net.fornwall.eclipsecoder.ccsupport.preferences.CCPreferencesPage"
+              category="net.fornwall.eclipsecoder.preferences.PreferencesPage"
+              name="C++"/>
+	</extension>
+
+	<extension point="org.eclipse.core.runtime.preferences">
+		<initializer class="net.fornwall.eclipsecoder.ccsupport.PreferenceInitializer"/>
+    </extension>
+
+</plugin>
