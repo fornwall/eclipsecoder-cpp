@@ -17,12 +17,12 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
@@ -35,7 +35,7 @@ public class CCPreferencesPage implements IWorkbenchPreferencePage {
 
 	private Label toolChainLabel;
 
-	private CCombo toolChainCombo;
+	private Combo toolChainCombo;
 
 	private ArrayList<String> toolChainId;
 
@@ -94,7 +94,7 @@ public class CCPreferencesPage implements IWorkbenchPreferencePage {
 		toolChainLabel = new Label(composite, SWT.NONE);
 		toolChainLabel.setText("Toolchain:");
 
-		toolChainCombo = new CCombo(composite, SWT.READ_ONLY | SWT.BORDER);
+		toolChainCombo = new Combo(composite, SWT.READ_ONLY | SWT.BORDER);
 		toolChainId = new ArrayList<String>();
 		initializeToolChainCombo();
 	}
