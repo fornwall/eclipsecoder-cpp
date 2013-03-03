@@ -33,11 +33,11 @@ public class CCPreferencesPage implements IWorkbenchPreferencePage {
 
 	private Label codeTemplateLabel;
 
-	private Label toolchainLabel;
+	private Label toolChainLabel;
 
-	private CCombo toolchainCombo;
+	private CCombo toolChainCombo;
 
-	private ArrayList<String> toolchainId;
+	private ArrayList<String> toolChainId;
 
 	private Composite composite;
 
@@ -46,7 +46,7 @@ public class CCPreferencesPage implements IWorkbenchPreferencePage {
 	}
 
 
-	private void initializeToolchainCombo() {
+	private void initializeToolChainCombo() {
 		// TODO: duplicated with CCLanguageSupport.java, maybe to extract as separate function is preferred
 		// look at CProjectPlatformPage#populateTypes()
 		for (IProjectType type : ManagedBuildManager.getDefinedProjectTypes()) {
@@ -63,10 +63,10 @@ public class CCPreferencesPage implements IWorkbenchPreferencePage {
 					if (osList.contains("all") || osList.contains(Platform.getOS())) {
 						List<String> archList = Arrays.asList(config.getToolChain().getArchList());
 						if (archList.contains("all") || archList.contains(Platform.getOSArch())) {
-							toolchainCombo.add(config.getToolChain().getName());
-							toolchainId.add(config.getId());
+							toolChainCombo.add(config.getToolChain().getName());
+							toolChainId.add(config.getId());
 							if(config.getId().equals(CCSupportPlugin.getInstance().getToolchain())) {
-								toolchainCombo.select(toolchainCombo.getItemCount()-1);
+								toolChainCombo.select(toolChainCombo.getItemCount()-1);
 							}
 						}
 					}
@@ -91,12 +91,12 @@ public class CCPreferencesPage implements IWorkbenchPreferencePage {
 				.getCodeTemplate());
 		codeTemplateEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		toolchainLabel = new Label(composite, SWT.NONE);
-		toolchainLabel.setText("Toolchain:");
+		toolChainLabel = new Label(composite, SWT.NONE);
+		toolChainLabel.setText("Toolchain:");
 
-		toolchainCombo = new CCombo(composite, SWT.READ_ONLY | SWT.BORDER);
-		toolchainId = new ArrayList<String>();
-		initializeToolchainCombo();
+		toolChainCombo = new CCombo(composite, SWT.READ_ONLY | SWT.BORDER);
+		toolChainId = new ArrayList<String>();
+		initializeToolChainCombo();
 	}
 
 	public void dispose() {
@@ -154,7 +154,7 @@ public class CCPreferencesPage implements IWorkbenchPreferencePage {
 		CCSupportPlugin.getInstance().getPreferenceStore().setValue(
 				CCSupportPlugin.CODE_TEMPLATE_PREFERENCE,
 				codeTemplateEditor.getText());
-		if(toolchainCombo.getSelectionIndex() < 0) {
+		if(toolChainCombo.getSelectionIndex() < 0) {
 			MessageBox box = new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK);
 			box.setText("EclipseCoder - C++ configuration");
 			box.setMessage("You need to specify a toolchain.");
@@ -163,7 +163,7 @@ public class CCPreferencesPage implements IWorkbenchPreferencePage {
 		}
 		CCSupportPlugin.getInstance().getPreferenceStore().setValue(
 				CCSupportPlugin.TOOLCHAIN_PREFERENCE,
-				toolchainId.get(toolchainCombo.getSelectionIndex()));
+				toolChainId.get(toolChainCombo.getSelectionIndex()));
 		return true;
 	}
 
