@@ -54,6 +54,9 @@ public class CCLanguageSupport extends LanguageSupport {
 		IProjectType parentProjectType = null;
 		IConfiguration parentConfig = null;
 
+		String toolChainId = CCSupportPlugin.getInstance().getToolchain();
+		boolean found = false;
+
 		// look at CProjectPlatformPage#populateTypes()
 		for (IProjectType type : ManagedBuildManager.getDefinedProjectTypes()) {
 			if (!type.isAbstract() && type.isSupported() && !type.isTestProjectType() && type.getId().contains("exe")) {
@@ -62,6 +65,12 @@ public class CCLanguageSupport extends LanguageSupport {
 					continue;
 
 				for (IConfiguration config : type.getConfigurations()) {
+					if(config.getId().equals(toolChainId)) {
+						parentProjectType = type;
+						parentConfig = config;
+						found = true;
+						break;
+					}
 					if (!config.getId().contains("debug")) {
 						continue;
 					}
@@ -75,6 +84,7 @@ public class CCLanguageSupport extends LanguageSupport {
 					}
 				}
 			}
+			if(found) break;
 		}
 
 		if (parentConfig == null) {
