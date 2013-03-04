@@ -29,6 +29,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	public void initializeDefaultPreferences() {
         IPreferenceStore store = CCSupportPlugin.getInstance().getPreferenceStore();
         store.setDefault(CCSupportPlugin.CODE_TEMPLATE_PREFERENCE, DEFAULT_CODE_TEMPLATE);
+        store.setDefault(CCSupportPlugin.TOOLCHAIN_PREFERENCE, "");
     }
 
 }

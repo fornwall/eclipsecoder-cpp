@@ -1,6 +1,14 @@
 package net.fornwall.eclipsecoder.ccsupport;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.eclipse.cdt.managedbuilder.core.IConfiguration;
+import org.eclipse.cdt.managedbuilder.core.IProjectType;
+import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferencePageContainer;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
@@ -9,12 +17,15 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PlatformUI;
 
 public class CCPreferencesPage implements IWorkbenchPreferencePage {
 
@@ -22,10 +33,46 @@ public class CCPreferencesPage implements IWorkbenchPreferencePage {
 
 	private Label codeTemplateLabel;
 
+	private Label toolChainLabel;
+
+	private Combo toolChainCombo;
+
+	private ArrayList<String> toolChainId;
+
 	private Composite composite;
 
 	public Point computeSize() {
 		return composite.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+	}
+
+
+	private void initializeToolChainCombo() {
+		// TODO: duplicated with CCLanguageSupport.java, maybe to extract as separate function is preferred
+		// look at CProjectPlatformPage#populateTypes()
+		for (IProjectType type : ManagedBuildManager.getDefinedProjectTypes()) {
+			if (!type.isAbstract() && type.isSupported() && !type.isTestProjectType() && type.getId().contains("exe")) {
+				// prevent other languages from being used (e.g. fortran and pascal):
+				if (!type.getId().contains("cdt."))
+					continue;
+
+				for (IConfiguration config : type.getConfigurations()) {
+					if (!config.getId().contains("debug")) {
+						continue;
+					}
+					List<String> osList = Arrays.asList(config.getToolChain().getOSList());
+					if (osList.contains("all") || osList.contains(Platform.getOS())) {
+						List<String> archList = Arrays.asList(config.getToolChain().getArchList());
+						if (archList.contains("all") || archList.contains(Platform.getOSArch())) {
+							toolChainCombo.add(config.getToolChain().getName());
+							toolChainId.add(config.getId());
+							if(config.getId().equals(CCSupportPlugin.getInstance().getToolchain())) {
+								toolChainCombo.select(toolChainCombo.getItemCount()-1);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public void createControl(Composite parent) {
@@ -43,6 +90,13 @@ public class CCPreferencesPage implements IWorkbenchPreferencePage {
 		codeTemplateEditor.setText(CCSupportPlugin.getInstance()
 				.getCodeTemplate());
 		codeTemplateEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		toolChainLabel = new Label(composite, SWT.NONE);
+		toolChainLabel.setText("Toolchain:");
+
+		toolChainCombo = new Combo(composite, SWT.READ_ONLY | SWT.BORDER);
+		toolChainId = new ArrayList<String>();
+		initializeToolChainCombo();
 	}
 
 	public void dispose() {
@@ -100,6 +154,16 @@ public class CCPreferencesPage implements IWorkbenchPreferencePage {
 		CCSupportPlugin.getInstance().getPreferenceStore().setValue(
 				CCSupportPlugin.CODE_TEMPLATE_PREFERENCE,
 				codeTemplateEditor.getText());
+		if(toolChainCombo.getSelectionIndex() < 0) {
+			MessageBox box = new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK);
+			box.setText("EclipseCoder - C++ configuration");
+			box.setMessage("You need to specify a toolchain.");
+			box.open();
+			return false;
+		}
+		CCSupportPlugin.getInstance().getPreferenceStore().setValue(
+				CCSupportPlugin.TOOLCHAIN_PREFERENCE,
+				toolChainId.get(toolChainCombo.getSelectionIndex()));
 		return true;
 	}
 
