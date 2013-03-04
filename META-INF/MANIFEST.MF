@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: EclipseCoder C++ Support
 Bundle-SymbolicName: net.fornwall.eclipsecoder.ccsupport; singleton:=true
-Bundle-Version: 0.2.5
+Bundle-Version: 0.2.6
 Bundle-ClassPath: .
 Bundle-Vendor: Fredrik Fornwall
 Export-Package: net.fornwall.eclipsecoder.ccsupport
