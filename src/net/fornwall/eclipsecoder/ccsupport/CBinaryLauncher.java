@@ -68,7 +68,7 @@ public class CBinaryLauncher extends AbstractLauncher {
 				throw new RuntimeException("Cannot find binary");
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw (e instanceof RuntimeException) ? ((RuntimeException) e) : new RuntimeException(e);
 		}
 	}
 
