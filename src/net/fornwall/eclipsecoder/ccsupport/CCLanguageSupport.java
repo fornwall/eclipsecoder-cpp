@@ -98,6 +98,7 @@ public class CCLanguageSupport extends LanguageSupport {
 				+ ManagedBuildManager.getRandomNumber());
 
 		newConfig.setArtifactName(newManagedProject.getDefaultArtifactName());
+		newConfig.getEditableBuilder().setAutoBuildEnable(true);
 		ManagedBuildManager.setDefaultConfiguration(project, newConfig);
 		ManagedBuildManager.setSelectedConfiguration(project, newConfig);
 		ManagedBuildManager.setNewProjectVersion(project);
